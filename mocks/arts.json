@@ -1,0 +1,98 @@
+{
+  "popular": [
+    {
+      "title": "The Starry Night",
+      "imageUrl": "https://picsum.photos/201/301",
+      "creator": {
+        "name": "Vincent van Gogh",
+        "photo": "https://picsum.photos/501/301",
+        "user": "@vangogh"
+      },
+      "createdAt": "2021-09-01"
+    },
+    {
+      "title": "The Last Supper",
+      "imageUrl": "https://picsum.photos/215/206",
+      "creator": {
+        "name": "Leonardo da Vinci",
+        "photo": "https://picsum.photos/541/331",
+        "user": "@leonardodavinci"
+      },
+      "createdAt": "2022-10-31"
+    },
+    {
+      "title": "The Persistence of Memory",
+      "imageUrl": "https://picsum.photos/207/331",
+      "creator": {
+        "name": "Salvador Dalí",
+        "photo": "https://picsum.photos/502/301",
+        "user": "@salvadordali"
+      },
+      "createdAt": "2021-09-01"
+    },
+    {
+      "title": "The Scream",
+      "imageUrl": "https://picsum.photos/251/301",
+      "creator": {
+        "name": "Edvard Munch",
+        "photo": "https://picsum.photos/531/301",
+        "user": "@edvardmunch"
+      },
+      "createdAt": "2021-09-01"
+    }
+  ],
+  "trending": [
+    {
+      "title": "Mona Lisa",
+      "imageUrl": "https://picsum.photos/202/301",
+      "creator": {
+        "name": "Leonardo da Vinci",
+        "photo": "https://picsum.photos/502/301",
+        "user": "@leonardodavinci"
+      },
+      "createdAt": "2021-09-01"
+    },
+    {
+      "title": "The Creation of Adam",
+      "imageUrl": "https://picsum.photos/216/206",
+      "creator": {
+        "name": "Michelangelo",
+        "photo": "https://picsum.photos/542/331",
+        "user": "@michelangelo"
+      },
+      "createdAt": "2022-10-31"
+    },
+    {
+      "title": "Girl with a Pearl Earring",
+      "imageUrl": "https://picsum.photos/208/331",
+      "creator": {
+        "name": "Johannes Vermeer",
+        "photo": "https://picsum.photos/503/301",
+        "user": "@johannesvermeer"
+      },
+      "createdAt": "2021-09-01"
+    },
+    {
+      "title": "The Birth of Venus",
+      "imageUrl": "https://picsum.photos/252/301",
+      "creator": {
+        "name": "Sandro Botticelli",
+        "photo": "https://picsum.photos/532/301",
+        "user": "@sandrobotticelli"
+      },
+      "createdAt": "2021-09-01"
+    }
+  ],
+  "artist": [
+    {
+      "title": "Mona Lisa",
+      "imageUrl": "https://picsum.photos/202/301",
+      "creator": {
+        "name": "Leonardo da Vinci",
+        "photo": "https://picsum.photos/502/301",
+        "user": "@leonardodavinci"
+      },
+      "createdAt": "2021-09-01"
+    }
+  ]
+}

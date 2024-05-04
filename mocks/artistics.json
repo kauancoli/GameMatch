@@ -1,0 +1,20 @@
+[
+  {
+    "name": "Van Gogh",
+    "imageUrl": "https://picsum.photos/201/301",
+    "user": "@vangogh",
+    "followers": 167
+  },
+  {
+    "name": "Selen Gomes",
+    "imageUrl": "https://picsum.photos/232/231",
+    "user": "@selen",
+    "followers": 346
+  },
+  {
+    "name": "Muspier",
+    "imageUrl": "https://picsum.photos/243/343",
+    "user": "@maners",
+    "followers": 16372
+  }
+]
