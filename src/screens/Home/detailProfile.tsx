@@ -1,4 +1,4 @@
-import { Arts } from "@components/Controllers/Arts/Art";
+import { Arts } from "@components/Controllers/Arts/Players";
 import { BackButtonHeader } from "@components/Controllers/BackButtonHeader";
 import { DetailProfileHeader } from "@components/Home";
 import { FontAwesome } from "@expo/vector-icons";

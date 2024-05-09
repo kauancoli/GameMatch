@@ -1,16 +1,11 @@
-export type Artwork = {
+export type Player = {
+  name: string;
+  user: string;
   imageUrl: string;
-  title: string;
-  creator?: {
-    name: string;
-    user: string;
-    photo: string;
-  };
-  createdAt: string;
+  favoriteGames: string[];
+  age: number;
 };
 
-export type ArtProp = {
-  title?: string;
-  artworks: Artwork[];
-  onPress?: () => void;
+export type PlayerProps = {
+  artworks: Player[];
 };

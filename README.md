@@ -1,4 +1,4 @@
-ArtWork Project in React Native
+GameMatch Project in React Native
 
 npm install
 

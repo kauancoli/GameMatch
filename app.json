@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "artwork-native",
-    "slug": "artwork-native",
+    "name": "gamematch",
+    "slug": "gamematch",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",

@@ -1,4 +1,5 @@
 import {
+  AntDesign,
   Feather,
   FontAwesome,
   FontAwesome6,
@@ -7,7 +8,8 @@ import {
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Explorer } from "@screens/Explore";
 import { Home } from "@screens/Home/main";
-import { Mail } from "@screens/Mail";
+import { Like } from "@screens/Like";
+import { Chat } from "@screens/Chat";
 import { Profile } from "@screens/Profile/profile";
 
 const Tab = createBottomTabNavigator();
@@ -38,11 +40,21 @@ export default function TabRoutes() {
       />
 
       <Tab.Screen
-        name="Mail"
-        component={Mail}
+        name="Like"
+        component={Like}
+        options={{
+          tabBarIcon: () => <AntDesign name="hearto" size={24} color="black" />,
+          tabBarShowLabel: false,
+          tabBarActiveBackgroundColor: "#f0f0f0",
+        }}
+      />
+
+      <Tab.Screen
+        name="Chat"
+        component={Chat}
         options={{
           tabBarIcon: () => (
-            <Ionicons name="mail-outline" size={24} color="black" />
+            <Ionicons name="chatbox-outline" size={24} color="black" />
           ),
           tabBarShowLabel: false,
           tabBarActiveBackgroundColor: "#f0f0f0",
