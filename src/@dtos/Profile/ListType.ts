@@ -1,8 +1,8 @@
-export type Artworks = {
+export type ItemList = {
   imageUrl: string;
 };
 
 export type ListProps = {
-  title: string;
-  artworks: Artworks[];
+  title?: string;
+  itemList: ItemList[];
 };

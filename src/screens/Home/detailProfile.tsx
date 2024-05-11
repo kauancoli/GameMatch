@@ -1,4 +1,4 @@
-import { Arts } from "@components/Controllers/Arts/Players";
+import { Players } from "@components/Controllers/Arts/Players";
 import { BackButtonHeader } from "@components/Controllers/BackButtonHeader";
 import { DetailProfileHeader } from "@components/Home";
 import { FontAwesome } from "@expo/vector-icons";
@@ -14,7 +14,7 @@ export const DetailProfile = () => {
       <DetailProfileArtwork />
 
       <View>
-        <Arts title="Artworks" artworks={[]} />
+        
       </View>
     </View>
   );

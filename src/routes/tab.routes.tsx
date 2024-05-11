@@ -3,13 +3,13 @@ import {
   Feather,
   FontAwesome,
   FontAwesome6,
-  Ionicons,
+  Ionicons
 } from "@expo/vector-icons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { Explorer } from "@screens/Explore";
+import { Chat } from "@screens/Chat/Chat";
+import { Explorer } from "@screens/Explore/Explore";
 import { Home } from "@screens/Home/main";
-import { Like } from "@screens/Like";
-import { Chat } from "@screens/Chat";
+import { Like } from "@screens/Like/Like";
 import { Profile } from "@screens/Profile/profile";
 
 const Tab = createBottomTabNavigator();

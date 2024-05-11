@@ -1,9 +1,9 @@
 {
   "player": [
     {
-      "name": "Eduarda Pimentel",
-      "user": "@dudaP",
-      "imageUrl": "https://picsum.photos/201/301",
+      "name": "Menor Luffy",
+      "user": "@mLuffy",
+      "imageUrl": "https://pbs.twimg.com/media/Fhm7_FbWQAQShM0.jpg",
       "favoriteGames": ["League of Legends", "Valorant", "Among Us"],
       "age": 22
     }

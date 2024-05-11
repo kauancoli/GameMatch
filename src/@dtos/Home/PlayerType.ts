@@ -7,5 +7,5 @@ export type Player = {
 };
 
 export type PlayerProps = {
-  artworks: Player[];
+  players: Player[];
 };
