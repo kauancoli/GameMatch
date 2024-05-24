@@ -3,11 +3,14 @@
   "compilerOptions": {
     "baseUrl": "./",
     "paths": {
+      "@assets/*": ["./assets/*"],
       "@mocks/*": ["./mocks/*"],
       "@components/*": ["./src/components/*"],
       "@screens/*": ["./src/screens/*"],
-      "@assets/*": ["./src/assets/*"],
-      "@dtos/*": ["./src/@dtos/*"]
+      "@services/*": ["./src/services/*"],
+      "@dtos/*": ["./src/@dtos/*"],
+      "@hooks/*": ["./src/hooks/*"],
+      "@routes/*": ["./src/routes/*"]
     }
   }
 }

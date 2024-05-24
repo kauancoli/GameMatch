@@ -1,14 +1,14 @@
 import { MainHeader } from "@components/Header/Header";
-import { DetailProfile } from "@screens/Home/detailProfile";
-import Routes from "src/routes/routes";
+import { AuthProvider } from "@hooks/useAuth";
+import Routes from "@routes/routes";
 
 export default function App() {
   return (
-    <>
-    <MainHeader />
-    <Routes />
-    </>
-    );
+    <AuthProvider>
+      <MainHeader />
+      <Routes />
+    </AuthProvider>
+  );
 }
 
 // export default function App() {
