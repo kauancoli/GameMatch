@@ -8,9 +8,9 @@ import {
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Chat } from "@screens/Chat/Chat";
 import { Explorer } from "@screens/Explore/Explore";
-import { Home } from "@screens/Home/main";
 import { Like } from "@screens/Like/Like";
 import { Profile } from "@screens/Profile/profile";
+import { HomeStack } from "./home.routes";
 
 const Tab = createBottomTabNavigator();
 
@@ -19,7 +19,7 @@ export default function TabRoutes() {
     <Tab.Navigator screenOptions={{ headerShown: false }}>
       <Tab.Screen
         name="Home"
-        component={Home}
+        component={HomeStack}
         options={{
           tabBarIcon: () => (
             <FontAwesome6 name="house-chimney" size={24} color="black" />

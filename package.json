@@ -15,6 +15,7 @@
     "@react-navigation/bottom-tabs": "^6.5.20",
     "@react-navigation/native": "^6.1.17",
     "@react-navigation/native-stack": "^6.9.26",
+    "@react-navigation/stack": "^6.3.29",
     "@types/react": "~18.2.45",
     "expo": "^51.0.1",
     "expo-status-bar": "~1.12.1",
@@ -24,6 +25,7 @@
     "react": "18.2.0",
     "react-native": "0.74.1",
     "react-native-deck-swiper": "^2.0.17",
+    "react-native-multiple-select": "^0.5.12",
     "typescript": "~5.3.3",
     "yup": "^1.4.0"
   },

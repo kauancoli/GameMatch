@@ -1,32 +1,55 @@
 import { UserDTO } from "@dtos/User/UserType";
 import useAuth from "@hooks/useAuth";
-import { useNavigation } from "@react-navigation/native";
 import { db } from "@services/firebase";
 import {
   doc,
-  getDoc,
   onSnapshot,
   serverTimestamp,
-  setDoc,
+  updateDoc,
 } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import {
+  Image,
   StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
   View,
 } from "react-native";
+import { GamesScreen } from "./games";
+
+const LabeledInput = ({
+  label,
+  value,
+  onChangeText,
+  placeholder,
+  ...props
+}) => (
+  <View style={styles.inputContainer}>
+    <Text style={styles.label}>{label}</Text>
+    <TextInput
+      style={styles.input}
+      value={value}
+      onChangeText={onChangeText}
+      placeholder={placeholder}
+      {...props}
+    />
+  </View>
+);
 
 export const ModalScreen = ({ onClose }) => {
   const { user } = useAuth();
   const [name, setName] = useState<string>("");
   const [image, setImage] = useState<string>("");
   const [age, setAge] = useState<string>("18");
-  const [games, setGames] = useState<string[]>([]);
   const [gender, setGender] = useState<string>("male");
+  const [description, setDescription] = useState<string>("");
 
-  const navigation = useNavigation();
+  const [gamePage, setGamePage] = useState(false);
+
+  const handleGamePage = () => {
+    setGamePage(true);
+  };
 
   useEffect(() => {
     const fetchUserProfile = async () => {
@@ -37,8 +60,8 @@ export const ModalScreen = ({ onClose }) => {
           setName(userData.name || "");
           setImage(userData.photoURL || "");
           setAge(userData.age.toString() || "18");
-          setGames(userData.games || []);
           setGender(userData.gender || "male");
+          setDescription(userData.description || "");
         }
       });
 
@@ -49,18 +72,18 @@ export const ModalScreen = ({ onClose }) => {
   }, [user]);
 
   const updateUserProfile = () => {
-    if (!image || !age || games.length === 0 || !gender) return;
+    if (!image || !age || !gender) return;
 
-    const userProfile: UserDTO = {
+    const userProfile: Omit<UserDTO, "games" | "categories"> = {
       id: user.uid,
       name: name,
       photoURL: image,
-      games: games,
+      description: description,
       age: parseInt(age),
       gender: gender,
     };
 
-    setDoc(doc(db, "users", user.uid), {
+    updateDoc(doc(db, "users", user.uid), {
       ...userProfile,
       timestamp: serverTimestamp(),
     })
@@ -72,66 +95,85 @@ export const ModalScreen = ({ onClose }) => {
 
   return (
     <View style={styles.container}>
-      <Text style={{ color: "grey" }}>Olá {user?.displayName}</Text>
-      <TextInput
-        style={styles.input}
-        value={name}
-        onChangeText={setName}
-        placeholder="Digite seu nome"
-      />
-      <TextInput
-        style={styles.input}
-        value={image}
-        onChangeText={setImage}
-        placeholder="Digite a URL da sua foto de perfil"
-      />
-      <TextInput
-        style={styles.input}
-        maxLength={2}
-        keyboardType="numeric"
-        value={age}
-        onChangeText={setAge}
-        placeholder="Digite sua idade"
-      />
-      <TextInput
-        style={styles.input}
-        value={games.join(",")}
-        onChangeText={(text) => setGames(text.split(","))}
-        placeholder="Digite seus jogos favoritos separados por vírgula"
-      />
-      <View style={styles.genderSelector}>
-        <Text>Gênero: </Text>
-        <TouchableOpacity
-          style={[
-            styles.genderButton,
-            gender === "male" && styles.selectedGenderButton,
-          ]}
-          onPress={() => setGender("male")}
-        >
-          <Text>Masculino</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={[
-            styles.genderButton,
-            gender === "female" && styles.selectedGenderButton,
-          ]}
-          onPress={() => setGender("female")}
-        >
-          <Text>Feminino</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={[
-            styles.genderButton,
-            gender === "non-binary" && styles.selectedGenderButton,
-          ]}
-          onPress={() => setGender("non-binary")}
-        >
-          <Text>Não-binário</Text>
-        </TouchableOpacity>
-      </View>
-      <TouchableOpacity style={styles.button} onPress={updateUserProfile}>
-        <Text style={styles.text}>Atualizar Perfil</Text>
-      </TouchableOpacity>
+      {gamePage ? (
+        <GamesScreen setGamePage={setGamePage} />
+      ) : (
+        <>
+          <Image
+            source={require("@assets/GameMatch.png")}
+            className="w-fit mb-8"
+          />
+
+          <LabeledInput
+            label="Nome"
+            value={name}
+            onChangeText={setName}
+            placeholder="Digite seu nome"
+          />
+          <LabeledInput
+            label="Descrição"
+            value={description}
+            onChangeText={setDescription}
+            placeholder="Digite sua descrição"
+          />
+          <LabeledInput
+            label="URL da Foto"
+            value={image}
+            onChangeText={setImage}
+            placeholder="Digite a URL da sua foto de perfil"
+          />
+          <LabeledInput
+            label="Idade"
+            value={age}
+            onChangeText={setAge}
+            placeholder="Digite sua idade"
+            maxLength={2}
+            keyboardType="numeric"
+          />
+
+          <TouchableOpacity style={styles.button} onPress={handleGamePage}>
+            <Text style={styles.text}>Jogos Favoritos</Text>
+          </TouchableOpacity>
+
+          <View style={styles.genderSelector}>
+            <Text>Gênero: </Text>
+            <TouchableOpacity
+              style={[
+                styles.genderButton,
+                gender === "male" && styles.selectedGenderButton,
+              ]}
+              onPress={() => setGender("male")}
+            >
+              <Text>Masculino</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[
+                styles.genderButton,
+                gender === "female" && styles.selectedGenderButton,
+              ]}
+              onPress={() => setGender("female")}
+            >
+              <Text>Feminino</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[
+                styles.genderButton,
+                gender === "non-binary" && styles.selectedGenderButton,
+              ]}
+              onPress={() => setGender("non-binary")}
+            >
+              <Text>Não-binário</Text>
+            </TouchableOpacity>
+          </View>
+          <TouchableOpacity style={styles.button} onPress={updateUserProfile}>
+            <Text style={styles.text}>Atualizar Perfil</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity style={styles.closeButton} onPress={onClose}>
+            <Text style={styles.text}>Fechar</Text>
+          </TouchableOpacity>
+        </>
+      )}
     </View>
   );
 };
@@ -143,10 +185,17 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "#f5f5f5",
   },
-  input: {
+  inputContainer: {
     width: "80%",
-    padding: 10,
     marginVertical: 10,
+  },
+  label: {
+    marginBottom: 5,
+    fontWeight: "bold",
+  },
+  input: {
+    width: "100%",
+    padding: 10,
     backgroundColor: "#fff",
     borderRadius: 5,
     borderColor: "#ddd",
@@ -154,6 +203,14 @@ const styles = StyleSheet.create({
   },
   button: {
     backgroundColor: "#D31FC1",
+    padding: 15,
+    borderRadius: 5,
+    width: "80%",
+    alignItems: "center",
+    marginTop: 10,
+  },
+  closeButton: {
+    backgroundColor: "#000000",
     padding: 15,
     borderRadius: 5,
     width: "80%",
@@ -179,4 +236,22 @@ const styles = StyleSheet.create({
   selectedGenderButton: {
     backgroundColor: "#f18be7",
   },
+  multiSelectDropdown: {
+    height: 40,
+    borderColor: "#ddd",
+    borderWidth: 1,
+    borderRadius: 5,
+  },
+  selectedItemsScroll: {
+    maxHeight: 100,
+    marginTop: 10,
+  },
+  selectedItem: {
+    backgroundColor: "#eaeaea",
+    padding: 5,
+    marginVertical: 2,
+    borderRadius: 3,
+  },
 });
+
+export default ModalScreen;

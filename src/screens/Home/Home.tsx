@@ -1,8 +1,6 @@
 import { UserDTO } from "@dtos/User/UserType";
 import { AntDesign, Entypo, MaterialCommunityIcons } from "@expo/vector-icons";
 import useAuth from "@hooks/useAuth";
-import json from "@mocks/players.json";
-import { useNavigation } from "@react-navigation/native";
 import { db } from "@services/firebase";
 import {
   collection,
@@ -15,40 +13,56 @@ import {
   setDoc,
   where,
 } from "firebase/firestore";
-import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
-import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import React, { useEffect, useRef, useState } from "react";
+import {
+  Image,
+  Modal,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import Swiper from "react-native-deck-swiper";
 import generateID from "src/lib/generateId";
 
 export const Home = () => {
   const { user } = useAuth();
-  const navigation = useNavigation();
   const swipeRef = useRef();
 
   const [profiles, setProfiles] = useState([]);
-
-  useLayoutEffect(() => {
-    const unsub = onSnapshot(doc(db, "users", user.uid), (snapshot) => {
-      if (!snapshot.exists()) {
-        navigation.navigate("Profile");
-      }
-    });
-
-    console.log("useLayoutEffect", user.uid);
-    return unsub;
-  }, []);
+  const [matchModalVisible, setMatchModalVisible] = useState(false);
+  const [matchedUser, setMatchedUser] = useState(null);
 
   useEffect(() => {
-    (async () => {
-      let passes = await getDocs(
+    const checkAndCreateUserProfile = async () => {
+      const userDocRef = doc(db, "users", user.uid);
+      const userDoc = await getDoc(userDocRef);
+
+      if (!userDoc.exists()) {
+        await setDoc(userDocRef, {
+          id: user.uid,
+          name: "Padrão",
+          photoURL: "https://example.com/default-photo.jpg",
+          description: "Padrão",
+          age: 18,
+          gender: "male",
+          timestamp: serverTimestamp(),
+        });
+      }
+    };
+
+    const fetchProfiles = async () => {
+      const passesSnapshot = await getDocs(
         collection(db, "users", user.uid, "passes")
-      ).then((snapshot) => snapshot.docs.map((doc) => doc.id));
-      const passedUserIds = passes.length > 0 ? passes : ["test"];
+      );
+      const passes = passesSnapshot.docs.map((doc) => doc.id);
 
-      let swipes = await getDocs(
+      const swipesSnapshot = await getDocs(
         collection(db, "users", user.uid, "swipes")
-      ).then((snapshot) => snapshot.docs.map((doc) => doc.id));
+      );
+      const swipes = swipesSnapshot.docs.map((doc) => doc.id);
 
+      const passedUserIds = passes.length > 0 ? passes : ["test"];
       const swipedUserIds = swipes.length > 0 ? swipes : ["test"];
 
       const unsub = onSnapshot(
@@ -64,31 +78,29 @@ export const Home = () => {
           );
         }
       );
-    })();
-  }, [db]);
+
+      return unsub;
+    };
+
+    checkAndCreateUserProfile().then(fetchProfiles);
+  }, [db, user]);
 
   const swipeLeft = async (cardIndex) => {
     if (!profiles[cardIndex]) return;
 
     const userSwiped = profiles[cardIndex];
-    console.log(`You Passed on ${userSwiped.name}`);
-
     setDoc(doc(db, "users", user.uid, "passes", userSwiped.id), userSwiped);
   };
+
   const swipeRight = async (cardIndex) => {
     if (!profiles[cardIndex]) return;
-    const userSwiped = profiles[cardIndex];
 
-    const loggedInProfile = await (
-      await getDoc(doc(db, "users", user.uid))
-    ).data();
+    const userSwiped = profiles[cardIndex];
+    const loggedInProfile = (await getDoc(doc(db, "users", user.uid))).data();
 
     getDoc(doc(db, "users", userSwiped.id, "swipes", user.uid)).then(
       (snapshot) => {
         if (snapshot.exists()) {
-          console.log("Hello");
-          console.log(`Hooray you matched with ${userSwiped.name}`);
-
           setDoc(
             doc(db, "users", user.uid, "swipes", userSwiped.id),
             userSwiped
@@ -103,12 +115,9 @@ export const Home = () => {
             timestamp: serverTimestamp(),
           });
 
-          navigation.navigate("Match", {
-            loggedInProfile,
-            userSwiped,
-          });
+          setMatchedUser(userSwiped);
+          setMatchModalVisible(true);
         } else {
-          console.log(`You Swiped on ${userSwiped.name}`);
           setDoc(
             doc(db, "users", user.uid, "swipes", userSwiped.id),
             userSwiped
@@ -122,7 +131,7 @@ export const Home = () => {
     <View className="flex-1 justify-center p-4">
       <View>
         <Text className="text-2xl font-bold">Jogadores</Text>
-        <Text className="text-sm ">Encontre seu duo para a jogatina</Text>
+        <Text className="text-sm">Encontre seu duo para a jogatina</Text>
       </View>
 
       <View className="flex-1 -m-4">
@@ -131,12 +140,8 @@ export const Home = () => {
           stackSize={5}
           cardIndex={0}
           verticalSwipe={false}
-          onSwipedLeft={(cardIndex) => {
-            swipeLeft(cardIndex);
-          }}
-          onSwipedRight={(cardIndex) => {
-            swipeRight(cardIndex);
-          }}
+          onSwipedLeft={(cardIndex) => swipeLeft(cardIndex)}
+          onSwipedRight={(cardIndex) => swipeRight(cardIndex)}
           backgroundColor="#a31a5f"
           overlayLabels={{
             left: {
@@ -169,7 +174,7 @@ export const Home = () => {
                   position: "relative",
                   height: "75%",
                   borderRadius: 20,
-                  backgroundColor: "red",
+                  backgroundColor: "white",
                 }}
               >
                 <Image
@@ -213,7 +218,7 @@ export const Home = () => {
                       <Text className="text-xl font-bold">{card?.age}</Text>
                     </View>
                     <View className="flex-row items-center gap-2">
-                      <Text className="text-md">{card?.games.join(", ")}</Text>
+                      <Text className="text-md">{card?.games[0]}</Text>
                     </View>
                   </View>
                   <View className="flex-row items-center justify-center">
@@ -244,7 +249,15 @@ export const Home = () => {
                 </View>
               </View>
             ) : (
-              <View style={[{ height: "75%", borderRadius: 15 }]}>
+              <View
+                key={id}
+                style={{
+                  position: "relative",
+                  height: "75%",
+                  borderRadius: 20,
+                  backgroundColor: "red",
+                }}
+              >
                 <Text>No more Profiles</Text>
                 <Image
                   style={{ height: 100, width: 100 }}
@@ -270,7 +283,32 @@ export const Home = () => {
           </TouchableOpacity>
         </View>
       </View>
-      {/* <Players players={player} /> */}
+
+      {matchedUser && (
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={matchModalVisible}
+          onRequestClose={() => setMatchModalVisible(false)}
+        >
+          <View style={styles.modalContainer}>
+            <View style={styles.modalView}>
+              <Text style={styles.matchText}>It's a Match!</Text>
+              <Image
+                style={styles.matchImage}
+                source={{ uri: matchedUser.photoURL }}
+              />
+              <Text style={styles.matchUserName}>{matchedUser.name}</Text>
+              <TouchableOpacity
+                style={styles.closeButton}
+                onPress={() => setMatchModalVisible(false)}
+              >
+                <Text style={styles.closeButtonText}>Close</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </Modal>
+      )}
     </View>
   );
 };
@@ -299,5 +337,44 @@ const styles = StyleSheet.create({
     width: 56,
     height: 56,
     backgroundColor: "#D4F1D6",
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(0,0,0,0.5)",
+  },
+  modalView: {
+    width: 300,
+    backgroundColor: "white",
+    borderRadius: 10,
+    padding: 20,
+    alignItems: "center",
+  },
+  matchText: {
+    fontSize: 24,
+    fontWeight: "bold",
+    marginBottom: 10,
+  },
+  matchImage: {
+    width: 100,
+    height: 100,
+    borderRadius: 50,
+    marginBottom: 10,
+  },
+  matchUserName: {
+    fontSize: 20,
+    fontWeight: "bold",
+  },
+  closeButton: {
+    marginTop: 20,
+    padding: 10,
+    borderRadius: 10,
+    backgroundColor: "#D4F1D6",
+  },
+  closeButtonText: {
+    fontSize: 16,
+    fontWeight: "bold",
+    color: "green",
   },
 });

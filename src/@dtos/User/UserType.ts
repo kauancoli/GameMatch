@@ -5,4 +5,6 @@ export type UserDTO = {
   photoURL: string;
   age: number;
   gender: string;
+  description: string;
+  categories: string[];
 };
