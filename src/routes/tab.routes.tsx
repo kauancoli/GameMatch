@@ -9,7 +9,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Chat } from "@screens/Chat/Chat";
 import { Explorer } from "@screens/Explore/Explore";
 import { Like } from "@screens/Like/Like";
-import { Profile } from "@screens/Profile/profile";
+import { Profile } from "@screens/Profile/Profile";
 import { HomeStack } from "./home.routes";
 
 const Tab = createBottomTabNavigator();
