@@ -14,7 +14,7 @@ export const Match = () => {
         <Image source={{ uri: "https://links.papareact.com/mg9" }} />
       </View>
 
-      <Text>You and {userSwiped.displayName} have liked each other.</Text>
+      <Text>Você e {userSwiped.displayName} curtiram um ao outro.</Text>
       <View>
         <Image source={{ uri: loggedInProfile.photoURL }} />
         <Image source={{ uri: userSwiped.photoURL }} />
@@ -25,7 +25,7 @@ export const Match = () => {
           navigation.navigate("Chat");
         }}
       >
-        <Text>Send a Message</Text>
+        <Text>Enviar mensagem</Text>
       </TouchableOpacity>
     </View>
   );

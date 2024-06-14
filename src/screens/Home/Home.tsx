@@ -297,7 +297,7 @@ export const Home = () => {
         >
           <View style={styles.modalContainer}>
             <View style={styles.modalView}>
-              <Text style={styles.matchText}>It's a Match!</Text>
+              <Text style={styles.matchText}>Vocês deram Match!</Text>
               <Image
                 style={styles.matchImage}
                 source={{ uri: matchedUser.photoURL }}
@@ -307,7 +307,7 @@ export const Home = () => {
                 style={styles.closeButton}
                 onPress={() => setMatchModalVisible(false)}
               >
-                <Text style={styles.closeButtonText}>Close</Text>
+                <Text style={styles.closeButtonText}>Fechar</Text>
               </TouchableOpacity>
             </View>
           </View>
