@@ -78,8 +78,6 @@ export const GamesScreen = ({ setGamePage }) => {
       .catch(alert);
   };
 
-  console.log(selectedGames, selectedCategories);
-
   return (
     <>
       <Image source={require("@assets/GameMatch.png")} className="w-fit mb-8" />

@@ -57,10 +57,6 @@ export const HomeFiltered = () => {
         where(filterType, "array-contains", filterValue)
       );
 
-      console.log(
-        `Querying for profiles with ${filterType} array-contains ${filterValue}`
-      );
-
       const unsub = onSnapshot(profilesQuery, (snapshot) => {
         const profiles = snapshot.docs
           .filter((doc) => doc.id !== user.uid)

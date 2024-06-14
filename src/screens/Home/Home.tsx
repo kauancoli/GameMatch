@@ -166,8 +166,30 @@ export const Home = () => {
           animateCardOpacity
           cards={profiles}
           containerStyle={{ backgroundColor: "transparent" }}
-          renderCard={(card: UserDTO, id) =>
-            card ? (
+          renderCard={(card: UserDTO, id) => {
+            if (!card) {
+              return (
+                <View
+                  key={id}
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    height: "75%",
+                    borderRadius: 20,
+                    backgroundColor: "gray",
+                  }}
+                >
+                  <Text>Sem mais perfis</Text>
+                  <Image
+                    style={{ height: 100, width: 100 }}
+                    source={{ uri: "https://links.papareact.com/6gb" }}
+                  />
+                </View>
+              );
+            }
+
+            return (
               <View
                 key={id}
                 style={{
@@ -218,7 +240,7 @@ export const Home = () => {
                       <Text className="text-xl font-bold">{card?.age}</Text>
                     </View>
                     <View className="flex-row items-center gap-2">
-                      <Text className="text-md">{card?.games[0]}</Text>
+                      <Text className="text-md">{card?.games?.[0]}</Text>
                     </View>
                   </View>
                   <View className="flex-row items-center justify-center">
@@ -229,7 +251,6 @@ export const Home = () => {
                         color="blue"
                       />
                     )}
-
                     {card.gender === "female" && (
                       <MaterialCommunityIcons
                         name="gender-female"
@@ -237,7 +258,6 @@ export const Home = () => {
                         color="pink"
                       />
                     )}
-
                     {card.gender === "non-binary" && (
                       <MaterialCommunityIcons
                         name="gender-non-binary"
@@ -248,24 +268,8 @@ export const Home = () => {
                   </View>
                 </View>
               </View>
-            ) : (
-              <View
-                key={id}
-                style={{
-                  position: "relative",
-                  height: "75%",
-                  borderRadius: 20,
-                  backgroundColor: "red",
-                }}
-              >
-                <Text>No more Profiles</Text>
-                <Image
-                  style={{ height: 100, width: 100 }}
-                  source={{ uri: "https://links.papareact.com/6gb" }}
-                />
-              </View>
-            )
-          }
+            );
+          }}
         />
 
         <View style={styles.buttonsContainer}>

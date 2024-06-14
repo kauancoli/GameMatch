@@ -14,8 +14,6 @@ export const ChatRow = ({ matchDetails, setSelectedProfile }) => {
     setMatchedUserInfo(getMactchedUserInfo(matchDetails.users, user.uid));
   }, [matchDetails, user]);
 
-  console.log("Matched", matchDetails);
-
   return (
     <TouchableOpacity
       className="flex-row rounded-lg bg-white mx-3 my-1 py-3 px-5 items-center"
